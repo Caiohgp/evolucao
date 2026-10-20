@@ -146,9 +146,15 @@
       if (mensagem) linhas.push('Mensagem: ' + mensagem);
 
       var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(linhas.join('\n'));
+      /* Abre ainda dentro do submit: fora do gesto do usuário o Safari/iOS bloqueia o popup */
+      var win = window.open(url, '_blank');
+      if (win) {
+        win.opener = null;
+      } else {
+        window.location.href = url;
+      }
       showToast('Redirecionando para o WhatsApp...');
       form.reset();
-      setTimeout(function () { window.open(url, '_blank', 'noopener'); }, 600);
     });
   });
 })();
